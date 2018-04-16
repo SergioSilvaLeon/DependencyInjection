@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Injections</string>
+    <string name="brew_coffee">Brew %s coffee</string>
+
+</resources>
