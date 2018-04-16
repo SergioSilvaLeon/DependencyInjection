@@ -6,6 +6,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ssilva.dependencyinjection.R;
+import com.ssilva.dependencyinjection.menu.coffe.Coffee;
+import com.ssilva.dependencyinjection.menu.coffe.CoffeeBrewer;
+import com.ssilva.dependencyinjection.util.CoffeeHelper;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -18,8 +21,9 @@ public class RestaurantA extends BaseFragment {
     @BindView(R.id.btn_brew_coffee)
     Button btnBrewCoffee;
 
-    // TODO: For Coffe
-
+    //For coffee
+    int waterQuantity = 10;
+    Coffee.Flavor flavor = Coffee.Flavor.Espresso;
 
 
     public RestaurantA() {
@@ -44,14 +48,26 @@ public class RestaurantA extends BaseFragment {
         txtTitle.setText("Restaurant A");
         btnBrewCoffee.setText(getString(R.string.brew_coffee, "Espresso"));
 
-        // TODO: Coffe Brewer Impl
+        brewWithHelper();
     }
 
     @OnClick(R.id.btn_brew_coffee)
     public void brewCoffee() {
-        // TODO: Imp
+        brewWithHelper();
     }
 
+    private void brewWithHelper() {
+        CoffeeHelper coffeeHelper  =new CoffeeHelper();
+        CoffeeBrewer coffeeBrewer = coffeeHelper.getCoffeeBrewer(waterQuantity,flavor);
+        coffeeBrewer.brewCoffee();
+    }
+
+    private void brewUsual() {
+        CoffeeHelper coffeeHelper = new CoffeeHelper();
+        CoffeeBrewer coffeeBrewer = coffeeHelper.getCoffeeBrewer
+                (waterQuantity, flavor);
+        coffeeBrewer.brewCoffee();
+    }
 
 
 }

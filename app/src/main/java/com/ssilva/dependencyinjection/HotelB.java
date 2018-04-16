@@ -7,6 +7,11 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.ssilva.dependencyinjection.menu.coffe.Coffee;
+import com.ssilva.dependencyinjection.menu.coffe.CoffeeBrewer;
+import com.ssilva.dependencyinjection.menu.coffe.Water;
+import com.ssilva.dependencyinjection.util.CoffeeHelper;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -21,6 +26,10 @@ public class HotelB extends AppCompatActivity {
     @BindView(R.id.btn_brew_coffee)
     Button btnBrewCoffee;
 
+    //For coffee
+    int waterQuantity =10;
+    Coffee.Flavor flavor = Coffee.Flavor.Americano;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +40,8 @@ public class HotelB extends AppCompatActivity {
         getSupportActionBar().setTitle("Hotel B");
         txtTitle.setText("Hotel B");
         btnBrewCoffee.setText(getString(R.string.brew_coffee, "Americano"));
-        // TODO:
+
+        brewWithHelper();
     }
 
     @Override
@@ -43,7 +53,20 @@ public class HotelB extends AppCompatActivity {
 
     @OnClick(R.id.btn_brew_coffee)
     public void brewCoffee() {
-        // TODO
+        brewWithHelper();
+    }
+
+    private void brewWithHelper() {
+        CoffeeHelper coffeeHelper  =new CoffeeHelper();
+        CoffeeBrewer coffeeBrewer = coffeeHelper.getCoffeeBrewer(waterQuantity,flavor);
+        coffeeBrewer.brewCoffee();
+    }
+
+    private void brewUsual() {
+        Water water = new Water(waterQuantity);
+        Coffee coffee = new Coffee(flavor);
+        CoffeeBrewer coffeeBrewer = new CoffeeBrewer(water, coffee);
+        coffeeBrewer.brewCoffee();
     }
 
 
