@@ -31,7 +31,9 @@ public class HotelB extends AppCompatActivity {
 
     //For coffee
     int waterQuantity =10;
-    Coffee.Flavor flavor = Coffee.Flavor.Americano;
+    Coffee.Flavor flavor;
+    CoffeeHelper coffeeHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,6 @@ public class HotelB extends AppCompatActivity {
         goDagger();
     }
 
-    @Inject CoffeeHelper coffeeHelper;
     CoffeeComponent coffeeComponent;
     private void goDagger() {
         coffeeComponent = DaggerCoffeeComponent.builder().build();
@@ -54,8 +55,14 @@ public class HotelB extends AppCompatActivity {
     }
 
     private void withDagger() {
-        CoffeeBrewer coffeeBrewer = coffeeHelper.getCoffeeBrewer(waterQuantity, flavor);
+    CoffeeBrewer coffeeBrewer = coffeeHelper.getCoffeeBrewer(waterQuantity, flavor);
         coffeeBrewer.brewCoffee();
+    }
+
+    @Inject
+    public void setCoffeeHelper (CoffeeHelper coffeeHelper, Coffee.Flavor flavor) {
+        this.coffeeHelper = coffeeHelper;
+        this.flavor = flavor;
     }
 
     @Override
@@ -68,19 +75,6 @@ public class HotelB extends AppCompatActivity {
     @OnClick(R.id.btn_brew_coffee)
     public void brewCoffee() {
         withDagger();
-    }
-
-    private void brewWithHelper() {
-        CoffeeHelper coffeeHelper  =new CoffeeHelper();
-        CoffeeBrewer coffeeBrewer = coffeeHelper.getCoffeeBrewer(waterQuantity,flavor);
-        coffeeBrewer.brewCoffee();
-    }
-
-    private void brewUsual() {
-        Water water = new Water(waterQuantity);
-        Coffee coffee = new Coffee(flavor);
-        CoffeeBrewer coffeeBrewer = new CoffeeBrewer(water, coffee);
-        coffeeBrewer.brewCoffee();
     }
 
 

@@ -1,5 +1,6 @@
 package com.ssilva.dependencyinjection.dagger;
 
+import com.ssilva.dependencyinjection.menu.coffe.Coffee;
 import com.ssilva.dependencyinjection.util.CoffeeHelper;
 
 import dagger.Module;
@@ -18,5 +19,8 @@ public class CoffeeProvider {
     // We're telling dagger that it can find a CoffeeHelper.
     // Dagger will know to look inside its modules, provides
     // Annotation.
+
+    @Provides
+    Coffee.Flavor getCoffeeFlavor() { return Coffee.Flavor.Espresso;}
 
 }

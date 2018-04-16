@@ -27,7 +27,7 @@ public class RestaurantA extends BaseFragment {
 
     //For coffee
     int waterQuantity = 10;
-    Coffee.Flavor flavor = Coffee.Flavor.Espresso;
+    Coffee.Flavor flavor;
 
 
     public RestaurantA() {
@@ -54,13 +54,17 @@ public class RestaurantA extends BaseFragment {
         goDagger();
     }
 
-    // Dagger needs a way to look for the coffee helper
-    // We're telling it that we need it, but we also need
-    // to specify how it gets created. That's where dagger,
-    // will look inside its modules.
+    CoffeeHelper coffeHelper;
+    // Method Injection, are we just injecting it in a different section
     @Inject
-    public CoffeeHelper coffeHelper;
-    private CoffeeComponent coffeeComponent;
+    public void setCoffeeMaker (CoffeeHelper coffeeHelper, Coffee.Flavor flavor) {
+        // Middle ware ? naa, Here we can simply do what we want
+
+        this.coffeHelper = coffeeHelper;
+        this.flavor = flavor;
+    }
+
+    public CoffeeComponent coffeeComponent;
     private void goDagger() {
         coffeeComponent = DaggerCoffeeComponent.builder().build();
         coffeeComponent.provideCoffee(this);
@@ -75,19 +79,5 @@ public class RestaurantA extends BaseFragment {
     public void brewCoffee() {
         withDagger();
     }
-
-    private void brewWithHelper() {
-        CoffeeHelper coffeeHelper  =new CoffeeHelper();
-        CoffeeBrewer coffeeBrewer = coffeeHelper.getCoffeeBrewer(waterQuantity,flavor);
-        coffeeBrewer.brewCoffee();
-    }
-
-    private void brewUsual() {
-        CoffeeHelper coffeeHelper = new CoffeeHelper();
-        CoffeeBrewer coffeeBrewer = coffeeHelper.getCoffeeBrewer
-                (waterQuantity, flavor);
-        coffeeBrewer.brewCoffee();
-    }
-
 
 }

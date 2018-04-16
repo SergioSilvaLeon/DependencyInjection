@@ -28,7 +28,9 @@ public class RestaurantB extends BaseFragment {
 
     //For coffee
     int waterQuantity =10;
-    Coffee.Flavor flavor = Coffee.Flavor.Latte;
+    Coffee.Flavor flavor;
+    public CoffeeHelper coffeeHelper;
+
 
 
     public RestaurantB() {
@@ -55,8 +57,13 @@ public class RestaurantB extends BaseFragment {
         goDagger();
     }
 
+
     @Inject
-    public CoffeeHelper coffeeHelper;
+    public void setCoffeeMaker(CoffeeHelper coffeeHelper, Coffee.Flavor flavor) {
+        this.coffeeHelper = coffeeHelper;
+        this.flavor = flavor;
+    }
+
     public CoffeeComponent coffeeComponent;
     private void goDagger() {
         coffeeComponent = DaggerCoffeeComponent.builder().build();
@@ -73,15 +80,4 @@ public class RestaurantB extends BaseFragment {
         withDagger();
     }
 
-    private void brewWithHelper() {
-        CoffeeHelper coffeeHelper  =new CoffeeHelper();
-        CoffeeBrewer coffeeBrewer = coffeeHelper.getCoffeeBrewer(waterQuantity,flavor);
-        coffeeBrewer.brewCoffee();
-    }
-    private void brewUsual() {
-        Water water = new Water(waterQuantity);
-        Coffee coffee = new Coffee(flavor);
-        CoffeeBrewer coffeeBrewer = new CoffeeBrewer(water, coffee);
-        coffeeBrewer.brewCoffee();
-    }
 }
