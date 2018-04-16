@@ -9,9 +9,10 @@ import android.widget.TextView;
 
 import com.ssilva.dependencyinjection.dagger.CoffeeComponent;
 import com.ssilva.dependencyinjection.dagger.DaggerCoffeeComponent;
+import com.ssilva.dependencyinjection.dagger.constructor.CoffeeComp;
+import com.ssilva.dependencyinjection.dagger.constructor.DaggerCoffeeComp;
 import com.ssilva.dependencyinjection.menu.coffe.Coffee;
 import com.ssilva.dependencyinjection.menu.coffe.CoffeeBrewer;
-import com.ssilva.dependencyinjection.menu.coffe.Water;
 import com.ssilva.dependencyinjection.util.CoffeeHelper;
 
 import javax.inject.Inject;
@@ -32,7 +33,6 @@ public class HotelB extends AppCompatActivity {
     //For coffee
     int waterQuantity =10;
     Coffee.Flavor flavor;
-    CoffeeHelper coffeeHelper;
 
 
     @Override
@@ -48,10 +48,14 @@ public class HotelB extends AppCompatActivity {
         goDagger();
     }
 
-    CoffeeComponent coffeeComponent;
+    @Inject
+    CoffeeHelper coffeeHelper;
+
     private void goDagger() {
-        coffeeComponent = DaggerCoffeeComponent.builder().build();
-        coffeeComponent.provideCoffee(this);
+        DaggerCoffeeComp
+                .builder()
+                .build()
+                .injectCoffeeHelper(this);
     }
 
     private void withDagger() {
