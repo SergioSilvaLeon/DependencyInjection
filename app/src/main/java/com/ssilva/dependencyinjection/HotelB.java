@@ -7,17 +7,20 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.ssilva.dependencyinjection.dagger.CoffeeComponent;
+import com.ssilva.dependencyinjection.dagger.DaggerCoffeeComponent;
 import com.ssilva.dependencyinjection.menu.coffe.Coffee;
 import com.ssilva.dependencyinjection.menu.coffe.CoffeeBrewer;
 import com.ssilva.dependencyinjection.menu.coffe.Water;
 import com.ssilva.dependencyinjection.util.CoffeeHelper;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class HotelB extends AppCompatActivity {
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -40,8 +43,19 @@ public class HotelB extends AppCompatActivity {
         getSupportActionBar().setTitle("Hotel B");
         txtTitle.setText("Hotel B");
         btnBrewCoffee.setText(getString(R.string.brew_coffee, "Americano"));
+        goDagger();
+    }
 
-        brewWithHelper();
+    @Inject CoffeeHelper coffeeHelper;
+    CoffeeComponent coffeeComponent;
+    private void goDagger() {
+        coffeeComponent = DaggerCoffeeComponent.builder().build();
+        coffeeComponent.provideCoffee(this);
+    }
+
+    private void withDagger() {
+        CoffeeBrewer coffeeBrewer = coffeeHelper.getCoffeeBrewer(waterQuantity, flavor);
+        coffeeBrewer.brewCoffee();
     }
 
     @Override
@@ -53,7 +67,7 @@ public class HotelB extends AppCompatActivity {
 
     @OnClick(R.id.btn_brew_coffee)
     public void brewCoffee() {
-        brewWithHelper();
+        withDagger();
     }
 
     private void brewWithHelper() {

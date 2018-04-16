@@ -6,9 +6,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ssilva.dependencyinjection.R;
+import com.ssilva.dependencyinjection.dagger.CoffeeComponent;
+import com.ssilva.dependencyinjection.dagger.DaggerCoffeeComponent;
 import com.ssilva.dependencyinjection.menu.coffe.Coffee;
 import com.ssilva.dependencyinjection.menu.coffe.CoffeeBrewer;
 import com.ssilva.dependencyinjection.util.CoffeeHelper;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -16,7 +20,7 @@ import timber.log.Timber;
 
 public class RestaurantA extends BaseFragment {
 
-    @BindView(R.id.txt_title)
+   @BindView(R.id.txt_title)
     TextView txtTitle;
     @BindView(R.id.btn_brew_coffee)
     Button btnBrewCoffee;
@@ -47,13 +51,29 @@ public class RestaurantA extends BaseFragment {
         Timber.d("onActivityCreated()");
         txtTitle.setText("Restaurant A");
         btnBrewCoffee.setText(getString(R.string.brew_coffee, "Espresso"));
+        goDagger();
+    }
 
-        brewWithHelper();
+    // Dagger needs a way to look for the coffee helper
+    // We're telling it that we need it, but we also need
+    // to specify how it gets created. That's where dagger,
+    // will look inside its modules.
+    @Inject
+    public CoffeeHelper coffeHelper;
+    private CoffeeComponent coffeeComponent;
+    private void goDagger() {
+        coffeeComponent = DaggerCoffeeComponent.builder().build();
+        coffeeComponent.provideCoffee(this);
+    }
+
+    private void withDagger() {
+        CoffeeBrewer coffeeBrewer = coffeHelper.getCoffeeBrewer(waterQuantity, flavor);
+        coffeeBrewer.brewCoffee();
     }
 
     @OnClick(R.id.btn_brew_coffee)
     public void brewCoffee() {
-        brewWithHelper();
+        withDagger();
     }
 
     private void brewWithHelper() {

@@ -6,10 +6,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ssilva.dependencyinjection.R;
+import com.ssilva.dependencyinjection.dagger.CoffeeComponent;
+import com.ssilva.dependencyinjection.dagger.DaggerCoffeeComponent;
 import com.ssilva.dependencyinjection.menu.coffe.Coffee;
 import com.ssilva.dependencyinjection.menu.coffe.CoffeeBrewer;
 import com.ssilva.dependencyinjection.menu.coffe.Water;
 import com.ssilva.dependencyinjection.util.CoffeeHelper;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -48,13 +52,25 @@ public class RestaurantB extends BaseFragment {
         Timber.d("onActivityCreated()");
         txtTitle.setText("Restaurant B");
         btnBrewCoffee.setText(getString(R.string.brew_coffee, "Latte"));
+        goDagger();
+    }
 
-        brewWithHelper();
+    @Inject
+    public CoffeeHelper coffeeHelper;
+    public CoffeeComponent coffeeComponent;
+    private void goDagger() {
+        coffeeComponent = DaggerCoffeeComponent.builder().build();
+        coffeeComponent.provideCoffee(this);
+    }
+
+    private void withDagger() {
+        CoffeeBrewer coffeeBrewer = coffeeHelper.getCoffeeBrewer(waterQuantity, flavor);
+        coffeeBrewer.brewCoffee();
     }
 
     @OnClick(R.id.btn_brew_coffee)
     public void brewCoffee() {
-        brewWithHelper();
+        withDagger();
     }
 
     private void brewWithHelper() {
