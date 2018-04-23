@@ -27,7 +27,7 @@ public class RestaurantA extends BaseFragment {
 
     //For coffee
     int waterQuantity = 10;
-    Coffee.Flavor flavor;
+    Coffee.Flavor flavor =  Coffee.Flavor.Espresso;
 
 
     public RestaurantA() {
@@ -55,13 +55,9 @@ public class RestaurantA extends BaseFragment {
     }
 
     CoffeeHelper coffeHelper;
-    // Method Injection, are we just injecting it in a different section
     @Inject
-    public void setCoffeeMaker (CoffeeHelper coffeeHelper, Coffee.Flavor flavor) {
-        // Middle ware ? naa, Here we can simply do what we want
-
+    public void setCoffeeMaker (CoffeeHelper coffeeHelper) {
         this.coffeHelper = coffeeHelper;
-        this.flavor = flavor;
     }
 
     public CoffeeComponent coffeeComponent;
@@ -70,14 +66,14 @@ public class RestaurantA extends BaseFragment {
         coffeeComponent.provideCoffee(this);
     }
 
-    private void withDagger() {
+    private void withMethodInjection() {
         CoffeeBrewer coffeeBrewer = coffeHelper.getCoffeeBrewer(waterQuantity, flavor);
         coffeeBrewer.brewCoffee();
     }
 
     @OnClick(R.id.btn_brew_coffee)
     public void brewCoffee() {
-        withDagger();
+        withMethodInjection();
     }
 
 }

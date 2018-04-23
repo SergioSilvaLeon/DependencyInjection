@@ -3,6 +3,8 @@ package com.ssilva.dependencyinjection.dagger;
 import com.ssilva.dependencyinjection.menu.coffe.Coffee;
 import com.ssilva.dependencyinjection.util.CoffeeHelper;
 
+import javax.inject.Named;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -10,17 +12,30 @@ import dagger.Provides;
 @Module
 public class CoffeeProvider {
 
-    // This tells dagger that it's going to instantiate
-    // a CoffeeHelper, so we can later on inject it.
-    @Provides // We're calling a CoffeHelper, when we need a CoffeeHelper!
-    CoffeeHelper getCoffeeHelper() {
-        return new CoffeeHelper();
+    @Provides
+    @Named("Small")
+    public int smallQuantity() {
+        return 10;
     }
-    // We're telling dagger that it can find a CoffeeHelper.
-    // Dagger will know to look inside its modules, provides
-    // Annotation.
+
+    @Provides
+    @Named("Medium")
+    public int mediumQuantity() {
+        return 20;
+    }
+
+    @Provides
+    @Named("Large")
+    public int largeQuantity() {
+        return 30;
+    }
 
     @Provides
     Coffee.Flavor getCoffeeFlavor() { return Coffee.Flavor.Espresso;}
+
+    @Provides
+    CoffeeHelper getCoffeeHelper(Coffee.Flavor flavor, @Named("Medium") int quantity) {
+        return new CoffeeHelper(flavor, quantity);
+    }
 
 }

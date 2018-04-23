@@ -7,21 +7,21 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.ssilva.dependencyinjection.dagger.CoffeeComponent;
-import com.ssilva.dependencyinjection.dagger.DaggerCoffeeComponent;
-import com.ssilva.dependencyinjection.dagger.constructor.CoffeeComp;
-import com.ssilva.dependencyinjection.dagger.constructor.DaggerCoffeeComp;
+
+import com.ssilva.dependencyinjection.dagger.named.DaggerCoffeeComp;
 import com.ssilva.dependencyinjection.menu.coffe.Coffee;
 import com.ssilva.dependencyinjection.menu.coffe.CoffeeBrewer;
 import com.ssilva.dependencyinjection.util.CoffeeHelper;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class HotelB extends AppCompatActivity {
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -31,8 +31,6 @@ public class HotelB extends AppCompatActivity {
     Button btnBrewCoffee;
 
     //For coffee
-    int waterQuantity =10;
-    Coffee.Flavor flavor;
 
 
     @Override
@@ -48,32 +46,28 @@ public class HotelB extends AppCompatActivity {
         goDagger();
     }
 
-    @Inject
-    CoffeeHelper coffeeHelper;
-
-    private void goDagger() {
-        DaggerCoffeeComp
-                .builder()
-                .build()
-                .injectCoffeeHelper(this);
-    }
-
-    private void withDagger() {
-    CoffeeBrewer coffeeBrewer = coffeeHelper.getCoffeeBrewer(waterQuantity, flavor);
-        coffeeBrewer.brewCoffee();
-    }
-
-    @Inject
-    public void setCoffeeHelper (CoffeeHelper coffeeHelper, Coffee.Flavor flavor) {
-        this.coffeeHelper = coffeeHelper;
-        this.flavor = flavor;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home)
             finish();
         return true;
+    }
+
+    @Inject
+    @Named("Large")
+    int waterQuantity;
+    @Inject
+    Coffee.Flavor flavor;
+    @Inject
+    CoffeeHelper coffeeHelper;
+
+    private void goDagger() {
+        DaggerCoffeeComp.builder().build().injectCoffeeHelper(this);
+    }
+
+    private void withDagger() {
+        CoffeeBrewer coffeeBrewer = coffeeHelper.getCoffeeBrewer(waterQuantity, flavor);
+        coffeeBrewer.brewCoffee();
     }
 
     @OnClick(R.id.btn_brew_coffee)

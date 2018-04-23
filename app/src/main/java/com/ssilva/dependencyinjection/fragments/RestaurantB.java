@@ -57,8 +57,7 @@ public class RestaurantB extends BaseFragment {
     @Inject
     public CoffeeHelper coffeeHelper;
     private void goDagger() {
-        CoffeeComponentOther coffeeComponent = DaggerCoffeeComponentOther.builder().build();
-        coffeeComponent.provideCoffee(this);
+        DaggerCoffeeComponentOther.builder().build().provideCoffee(this);
     }
 
     private void withDagger() {
