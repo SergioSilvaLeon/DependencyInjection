@@ -1,4 +1,4 @@
-package com.ssilva.dependencyinjection.dagger;
+package com.ssilva.dependencyinjection.dagger.moduledep;
 
 import com.ssilva.dependencyinjection.menu.coffe.Coffee;
 

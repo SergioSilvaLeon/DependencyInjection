@@ -6,11 +6,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ssilva.dependencyinjection.R;
-import com.ssilva.dependencyinjection.dagger.CoffeeComponent;
-import com.ssilva.dependencyinjection.dagger.DaggerCoffeeComponent;
+import com.ssilva.dependencyinjection.dagger.moduledep.CoffeeComponentOther;
+import com.ssilva.dependencyinjection.dagger.moduledep.DaggerCoffeeComponentOther;
 import com.ssilva.dependencyinjection.menu.coffe.Coffee;
 import com.ssilva.dependencyinjection.menu.coffe.CoffeeBrewer;
-import com.ssilva.dependencyinjection.menu.coffe.Water;
 import com.ssilva.dependencyinjection.util.CoffeeHelper;
 
 import javax.inject.Inject;
@@ -28,9 +27,7 @@ public class RestaurantB extends BaseFragment {
 
     //For coffee
     int waterQuantity =10;
-    Coffee.Flavor flavor;
-    public CoffeeHelper coffeeHelper;
-
+    Coffee.Flavor flavor = Coffee.Flavor.Latte;
 
 
     public RestaurantB() {
@@ -57,16 +54,10 @@ public class RestaurantB extends BaseFragment {
         goDagger();
     }
 
-
     @Inject
-    public void setCoffeeMaker(CoffeeHelper coffeeHelper, Coffee.Flavor flavor) {
-        this.coffeeHelper = coffeeHelper;
-        this.flavor = flavor;
-    }
-
-    public CoffeeComponent coffeeComponent;
+    public CoffeeHelper coffeeHelper;
     private void goDagger() {
-        coffeeComponent = DaggerCoffeeComponent.builder().build();
+        CoffeeComponentOther coffeeComponent = DaggerCoffeeComponentOther.builder().build();
         coffeeComponent.provideCoffee(this);
     }
 
