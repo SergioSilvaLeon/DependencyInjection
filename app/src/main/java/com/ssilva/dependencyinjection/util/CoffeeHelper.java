@@ -7,6 +7,23 @@ import com.ssilva.dependencyinjection.menu.coffe.Water;
 
 public class CoffeeHelper {
 
+    private int waterQuantity;
+    private Coffee.Flavor flavor;
+
+    public CoffeeHelper(int waterQuantity, Coffee.Flavor flavor) {
+        this.waterQuantity = waterQuantity;
+        this.flavor = flavor;
+    }
+
+
+    public CoffeeBrewer getCoffeeBrewer() {
+        Water water = new Water(waterQuantity);
+        Coffee coffee = new Coffee(flavor);
+        return new CoffeeBrewer(water, coffee);
+    }
+
+    //---------------------
+
     public CoffeeHelper() {
     }
 
@@ -16,6 +33,7 @@ public class CoffeeHelper {
         Coffee coffee = new Coffee(flavor);
         return new CoffeeBrewer(water, coffee);
     }
+
 
 }
 

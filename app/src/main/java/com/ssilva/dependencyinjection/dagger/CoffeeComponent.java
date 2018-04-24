@@ -13,5 +13,5 @@ public interface CoffeeComponent {
 
     void provideCoffee(RestaurantB restaurantB);
 
-    void provideCoffee(HotelB hotelB);
+    //void provideCoffee(HotelB hotelB);
 }
