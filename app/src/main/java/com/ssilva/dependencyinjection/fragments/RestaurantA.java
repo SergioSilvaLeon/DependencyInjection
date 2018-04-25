@@ -53,20 +53,15 @@ public class RestaurantA extends BaseFragment {
         btnBrewCoffee.setText(getString(R.string.brew_coffee, "Espresso"));
         goDagger();
     }
-
-    // Dagger needs a way to look for the coffee helper
-    // We're telling it that we need it, but we also need
-    // to specify how it gets created. That's where dagger,
-    // will look inside its modules.
     @Inject
     public CoffeeHelper coffeHelper;
     private CoffeeComponent coffeeComponent;
     private void goDagger() {
         coffeeComponent = DaggerCoffeeComponent.builder().build();
-        coffeeComponent.provideCoffee(this);
     }
 
     private void withDagger() {
+        coffeeComponent.provideCoffee(this);
         CoffeeBrewer coffeeBrewer = coffeHelper.getCoffeeBrewer(waterQuantity, flavor);
         coffeeBrewer.brewCoffee();
     }
